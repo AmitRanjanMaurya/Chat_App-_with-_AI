@@ -1,0 +1,3 @@
+## 2024-05-24 - Enhance TextField and Send Icon interactions
+**Learning:** Adding software keyboard actions (like `ImeAction.Send`) to input fields provides a more native and fluent user experience, especially on mobile. Furthermore, providing visual feedback for disabled actions (like updating a Send icons color alpha and disabling it when input is empty) improves clarity and helps users understand what to do next without frustration.
+**Action:** Always consider enabling keyboard actions for simple form submissions or chats, and ensure any disabled state in the UI provides clear visual and functional feedback.
