@@ -30,6 +30,7 @@ import androidx.compose.material.icons.rounded.AddPhotoAlternate
 import androidx.compose.material.icons.rounded.Send
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -160,21 +161,23 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    Icon(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clickable {
-                                imagePicker.launch(
-                                    PickVisualMediaRequest
-                                        .Builder()
-                                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                                        .build()
-                                )
-                            },
-                        imageVector = Icons.Rounded.AddPhotoAlternate,
-                        contentDescription = "Add Photo",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
+                    IconButton(
+                        onClick = {
+                            imagePicker.launch(
+                                PickVisualMediaRequest
+                                    .Builder()
+                                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                    .build()
+                            )
+                        }
+                    ) {
+                        Icon(
+                            modifier = Modifier.size(40.dp),
+                            imageVector = Icons.Rounded.AddPhotoAlternate,
+                            contentDescription = "Add Photo",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -193,17 +196,19 @@ class MainActivity : ComponentActivity() {
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                Icon(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clickable {
-                            chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
-                            uriState.update { "" }
-                        },
-                    imageVector = Icons.Rounded.Send,
-                    contentDescription = "Send prompt",
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                IconButton(
+                    onClick = {
+                        chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
+                        uriState.update { "" }
+                    }
+                ) {
+                    Icon(
+                        modifier = Modifier.size(40.dp),
+                        imageVector = Icons.Rounded.Send,
+                        contentDescription = "Send prompt",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
 
             }
 
