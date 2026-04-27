@@ -1,0 +1,3 @@
+## 2026-04-27 - Icon vs IconButton Accessibility in Compose
+**Learning:** Using `Icon` with `Modifier.clickable` creates interactive elements but fails to provide standard accessibility features natively, like a minimum touch target size (48x48dp in Material Design) and built-in focus/ripple feedback. This makes it harder for users relying on keyboard navigation or screen readers, and those with limited fine motor skills.
+**Action:** When creating interactive icon buttons in Jetpack Compose, always use the standard `IconButton` component wrapping an `Icon` instead of attaching `Modifier.clickable` to an `Icon`.
