@@ -1,0 +1,3 @@
+## 2026-04-30 - Replace clickable Icons with IconButtons in Compose
+**Learning:** Using `Modifier.clickable` directly on an `Icon` in Jetpack Compose misses out on important accessibility semantics (like minimum touch target sizes) and standard visual feedback (like the ripple effect).
+**Action:** Always prefer using the built-in `IconButton` composable when an icon needs to be interactive, as it automatically handles proper sizing, focus semantics, and visual state feedback.
