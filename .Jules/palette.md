@@ -1,0 +1,3 @@
+## 2024-06-25 - Use IconButton instead of Modifier.clickable on Icon
+**Learning:** For interactive icons in Jetpack Compose, using an `Icon` component with a `Modifier.clickable` directly applied does not automatically provide sufficient touch targets (accessibility guidelines suggest at least 48dp x 48dp) and misses out on built-in visual ripple feedback, leading to a suboptimal user experience.
+**Action:** Always prefer wrapping `Icon` components with an `IconButton` component when they are interactive to inherit standard minimum touch target behaviors, accessibility focus states, and the material ripple effect natively.
