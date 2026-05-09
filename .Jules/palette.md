@@ -1,0 +1,3 @@
+## 2024-05-18 - Jetpack Compose Interactive Icons
+**Learning:** Using `Modifier.clickable` directly on an `Icon` in Jetpack Compose is an accessibility anti-pattern. It bypasses the built-in accessibility semantics and focus indicators provided by `IconButton`. It also fails to automatically enforce the minimum touch target size (typically 48x48dp for accessibility) and lacks standard visual feedback (like the ripple effect).
+**Action:** Always prefer using the standard `IconButton` (or similar interactive wrapper components like `Button`, `TextButton`, etc.) with an `Icon` inside, rather than making an `Icon` directly clickable with `Modifier.clickable`. This ensures built-in accessibility, touch target sizing, and proper interaction feedback.
