@@ -1,3 +1,6 @@
 ## 2024-05-24 - Accessible Interactive Icons in Jetpack Compose
 **Learning:** Using `Modifier.clickable` on an `Icon` component in Jetpack Compose does not automatically provide the necessary minimum touch target size (48x48dp) or visual feedback (like a ripple effect) required for good accessibility and UX.
 **Action:** Always prefer wrapping `Icon` components with an `IconButton` when they are meant to be interactive. `IconButton` built-in defaults satisfy accessibility touch targets and provide focus semantics and ripple effects out of the box.
+## 2024-05-24 - Enhancing Jetpack Compose Text Field and Button UX
+**Learning:** For a chat application, `TextField` input experience is drastically improved when users do not need to manually capitalize sentences or dismiss the keyboard to send. Additionally, relying only on user intuition to know a blank message can't be sent is a poor UX.
+**Action:** Always configure `KeyboardOptions` (specifically `KeyboardCapitalization.Sentences` and `ImeAction.Send`) alongside `KeyboardActions` for chat/input fields. Also, always ensure action buttons (like Send) visually indicate disabled state when the required input (`prompt` or `bitmap`) is missing, instead of just dropping the action silently.
