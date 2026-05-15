@@ -1,3 +1,6 @@
 ## 2024-05-24 - Accessible Interactive Icons in Jetpack Compose
 **Learning:** Using `Modifier.clickable` on an `Icon` component in Jetpack Compose does not automatically provide the necessary minimum touch target size (48x48dp) or visual feedback (like a ripple effect) required for good accessibility and UX.
 **Action:** Always prefer wrapping `Icon` components with an `IconButton` when they are meant to be interactive. `IconButton` built-in defaults satisfy accessibility touch targets and provide focus semantics and ripple effects out of the box.
+## 2024-05-15 - TextField Keyboard UX and Disabled Icon Tints
+**Learning:** Hardcoded icon tints (like `MaterialTheme.colorScheme.primary`) in Compose do not automatically adapt when an `IconButton` is disabled. Furthermore, adding `KeyboardOptions` and `KeyboardActions` to Jetpack Compose `TextField`s is an easy way to enable the system keyboard's submit action and improve mobile UX.
+**Action:** When adding or checking `enabled` states on `IconButton`s, always verify if the `Icon`'s `tint` parameter also needs to be updated conditionally to reflect the disabled visual state. Always add `KeyboardOptions` (especially `imeAction`) to `TextField`s that act as a primary input.
