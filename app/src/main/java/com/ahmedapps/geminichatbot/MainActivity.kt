@@ -30,6 +30,8 @@ import androidx.compose.material.icons.rounded.AddPhotoAlternate
 import androidx.compose.material.icons.rounded.Send
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -191,22 +193,25 @@ class MainActivity : ComponentActivity() {
                     },
                     placeholder = {
                         Text(text = "Type a prompt")
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
 
+                val isSendEnabled = chatState.prompt.isNotBlank() || bitmap != null
                 IconButton(
                     onClick = {
                         chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
                         uriState.update { "" }
-                    }
+                    },
+                    enabled = isSendEnabled
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
                         imageVector = Icons.Rounded.Send,
                         contentDescription = "Send prompt",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = if (isSendEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                     )
                 }
 
