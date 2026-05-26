@@ -196,17 +196,19 @@ class MainActivity : ComponentActivity() {
 
                 Spacer(modifier = Modifier.width(8.dp))
 
+                val isPromptEmpty = chatState.prompt.isBlank() && bitmap == null
                 IconButton(
                     onClick = {
                         chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
                         uriState.update { "" }
-                    }
+                    },
+                    enabled = !isPromptEmpty
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
                         imageVector = Icons.Rounded.Send,
                         contentDescription = "Send prompt",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = if (isPromptEmpty) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f) else MaterialTheme.colorScheme.primary
                     )
                 }
 
