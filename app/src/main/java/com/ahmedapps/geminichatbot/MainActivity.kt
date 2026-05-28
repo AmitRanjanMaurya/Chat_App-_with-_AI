@@ -116,6 +116,7 @@ class MainActivity : ComponentActivity() {
         val chatState = chaViewModel.chatState.collectAsState().value
 
         val bitmap = getBitmap()
+        val isSendEnabled = chatState.prompt.isNotBlank() || bitmap != null
 
         Column(
             modifier = Modifier
@@ -200,13 +201,14 @@ class MainActivity : ComponentActivity() {
                     onClick = {
                         chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
                         uriState.update { "" }
-                    }
+                    },
+                    enabled = isSendEnabled
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
                         imageVector = Icons.Rounded.Send,
                         contentDescription = "Send prompt",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = if (isSendEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                     )
                 }
 
