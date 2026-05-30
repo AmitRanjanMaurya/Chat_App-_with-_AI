@@ -43,8 +43,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
@@ -116,6 +120,7 @@ class MainActivity : ComponentActivity() {
         val chatState = chaViewModel.chatState.collectAsState().value
 
         val bitmap = getBitmap()
+        val isSendEnabled = chatState.prompt.isNotBlank() || bitmap != null
 
         Column(
             modifier = Modifier
@@ -191,7 +196,19 @@ class MainActivity : ComponentActivity() {
                     },
                     placeholder = {
                         Text(text = "Type a prompt")
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        imeAction = ImeAction.Send
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onSend = {
+                            if (isSendEnabled) {
+                                chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
+                                uriState.update { "" }
+                            }
+                        }
+                    )
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -200,13 +217,14 @@ class MainActivity : ComponentActivity() {
                     onClick = {
                         chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
                         uriState.update { "" }
-                    }
+                    },
+                    enabled = isSendEnabled
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
                         imageVector = Icons.Rounded.Send,
                         contentDescription = "Send prompt",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = if (isSendEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                     )
                 }
 
