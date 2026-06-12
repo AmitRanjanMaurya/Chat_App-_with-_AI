@@ -1,3 +1,6 @@
 ## 2024-05-24 - Accessible Interactive Icons in Jetpack Compose
 **Learning:** Using `Modifier.clickable` on an `Icon` component in Jetpack Compose does not automatically provide the necessary minimum touch target size (48x48dp) or visual feedback (like a ripple effect) required for good accessibility and UX.
 **Action:** Always prefer wrapping `Icon` components with an `IconButton` when they are meant to be interactive. `IconButton` built-in defaults satisfy accessibility touch targets and provide focus semantics and ripple effects out of the box.
+## 2024-06-12 - Prevent Empty Form Submissions in Chat Interfaces
+**Learning:** In chat interfaces, providing immediate visual feedback when an action is invalid (like sending an empty message without an image) prevents user frustration and accidental submissions. Disabling the "Send" button when no input is provided is a common UX pattern, but in Jetpack Compose, an explicitly tinted `Icon` within an `IconButton` requires manual adjustment of the `tint` parameter to accurately reflect the disabled state visually (e.g., using a faded color).
+**Action:** When conditionally disabling interactive elements like `IconButton` in Jetpack Compose, always ensure any custom-tinted child `Icon`s are also dynamically updated to reflect their disabled state for clear visual communication to the user.
