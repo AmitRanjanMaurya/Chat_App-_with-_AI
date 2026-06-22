@@ -1,3 +1,6 @@
 ## 2024-05-24 - Accessible Interactive Icons in Jetpack Compose
 **Learning:** Using `Modifier.clickable` on an `Icon` component in Jetpack Compose does not automatically provide the necessary minimum touch target size (48x48dp) or visual feedback (like a ripple effect) required for good accessibility and UX.
 **Action:** Always prefer wrapping `Icon` components with an `IconButton` when they are meant to be interactive. `IconButton` built-in defaults satisfy accessibility touch targets and provide focus semantics and ripple effects out of the box.
+## 2024-05-25 - Disabling Invalid Actions Visually
+**Learning:** In Jetpack Compose, an interactive element like `IconButton` should not just have its logic restricted when an action is invalid (like sending an empty message). It should also clearly indicate its disabled state visually, for example, by modifying the `enabled` parameter and adjusting the inner `Icon`'s `tint` (e.g., to `MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)`) to match the disabled state, which is crucial for good user feedback and accessibility.
+**Action:** Always tie button enablement and visual styling directly to state conditions that validate the user's input, ensuring that unavailable actions are distinctly communicated.
