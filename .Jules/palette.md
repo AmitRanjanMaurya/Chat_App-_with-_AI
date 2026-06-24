@@ -1,3 +1,6 @@
 ## 2024-05-24 - Accessible Interactive Icons in Jetpack Compose
 **Learning:** Using `Modifier.clickable` on an `Icon` component in Jetpack Compose does not automatically provide the necessary minimum touch target size (48x48dp) or visual feedback (like a ripple effect) required for good accessibility and UX.
 **Action:** Always prefer wrapping `Icon` components with an `IconButton` when they are meant to be interactive. `IconButton` built-in defaults satisfy accessibility touch targets and provide focus semantics and ripple effects out of the box.
+## 2024-05-25 - Disabling Send Buttons in Chat UIs
+**Learning:** In a chat interface, keeping the "Send" button enabled when there's no input (text or image) can lead to user confusion and potentially empty messages. Additionally, if the `Icon` inside the `IconButton` has a hardcoded custom tint, the standard disabled styling is overridden, preventing visual feedback.
+**Action:** Always visually disable action buttons (like "Send") when their execution would be invalid. Ensure that the inner component's colors (e.g., `tint` for `Icon`) dynamically adapt based on the enabled state, using a standard lower opacity (e.g., `alpha = 0.38f`) for the disabled appearance.
