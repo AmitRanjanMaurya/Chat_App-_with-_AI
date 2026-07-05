@@ -10,6 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,9 +44,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
@@ -109,11 +115,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     fun ChatScreen(paddingValues: PaddingValues) {
         val chaViewModel = viewModel<ChatViewModel>()
         val chatState = chaViewModel.chatState.collectAsState().value
+        val keyboardController = LocalSoftwareKeyboardController.current
 
         val bitmap = getBitmap()
 
@@ -191,7 +198,20 @@ class MainActivity : ComponentActivity() {
                     },
                     placeholder = {
                         Text(text = "Type a prompt")
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        imeAction = ImeAction.Send
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onSend = {
+                            if (chatState.prompt.isNotEmpty()) {
+                                chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
+                                uriState.update { "" }
+                                keyboardController?.hide()
+                            }
+                        }
+                    )
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -200,13 +220,18 @@ class MainActivity : ComponentActivity() {
                     onClick = {
                         chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
                         uriState.update { "" }
-                    }
+                    },
+                    enabled = chatState.prompt.isNotEmpty()
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
                         imageVector = Icons.Rounded.Send,
                         contentDescription = "Send prompt",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = if (chatState.prompt.isNotEmpty()) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                        }
                     )
                 }
 
