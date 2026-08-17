@@ -1,3 +1,6 @@
 ## 2024-05-24 - Accessible Interactive Icons in Jetpack Compose
 **Learning:** Using `Modifier.clickable` on an `Icon` component in Jetpack Compose does not automatically provide the necessary minimum touch target size (48x48dp) or visual feedback (like a ripple effect) required for good accessibility and UX.
 **Action:** Always prefer wrapping `Icon` components with an `IconButton` when they are meant to be interactive. `IconButton` built-in defaults satisfy accessibility touch targets and provide focus semantics and ripple effects out of the box.
+## 2024-05-25 - Contextual State and Keyboard Actions in Jetpack Compose Inputs
+**Learning:** A common UX gap in Jetpack Compose forms is leaving action buttons fully enabled with no visual indication when the form state is invalid (e.g., an empty text field). Additionally, omitting `KeyboardOptions` (like capitalization and IME actions) and `KeyboardActions` prevents intuitive software keyboard interactions.
+**Action:** Always dynamically disable action buttons (like a "Send" button) and explicitly adjust their visual styling (e.g., tinting) when their required state is unmet. Always configure text inputs with appropriate `KeyboardOptions` and `KeyboardActions` to map the software keyboard's action key (e.g., "Send") to the actual submission logic.
