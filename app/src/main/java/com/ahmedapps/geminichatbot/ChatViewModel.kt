@@ -21,7 +21,7 @@ class ChatViewModel : ViewModel() {
     fun onEvent(event: ChatUiEvent) {
         when (event) {
             is ChatUiEvent.SendPrompt -> {
-                if (event.prompt.isNotEmpty()) {
+                if (event.prompt.isNotBlank() || event.bitmap != null) {
                     addPrompt(event.prompt, event.bitmap)
 
                     if (event.bitmap != null) {
