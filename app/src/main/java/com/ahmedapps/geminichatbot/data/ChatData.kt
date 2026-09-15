@@ -49,7 +49,7 @@ object ChatData {
 
             val inputContent = content {
                 image(bitmap)
-                text(prompt)
+                text(prompt.ifBlank { "Describe this image" })
             }
 
             val response = withContext(Dispatchers.IO) {
