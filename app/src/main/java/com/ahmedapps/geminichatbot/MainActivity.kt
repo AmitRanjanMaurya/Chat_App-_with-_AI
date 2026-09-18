@@ -45,6 +45,12 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
@@ -109,13 +115,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     fun ChatScreen(paddingValues: PaddingValues) {
         val chaViewModel = viewModel<ChatViewModel>()
         val chatState = chaViewModel.chatState.collectAsState().value
 
         val bitmap = getBitmap()
+        val keyboardController = LocalSoftwareKeyboardController.current
+        val isSendEnabled = chatState.prompt.isNotEmpty() || bitmap != null
 
         Column(
             modifier = Modifier
@@ -191,7 +199,20 @@ class MainActivity : ComponentActivity() {
                     },
                     placeholder = {
                         Text(text = "Type a prompt")
-                    }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Sentences,
+                        imeAction = ImeAction.Send
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onSend = {
+                            if (isSendEnabled) {
+                                chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
+                                uriState.update { "" }
+                                keyboardController?.hide()
+                            }
+                        }
+                    )
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -200,13 +221,15 @@ class MainActivity : ComponentActivity() {
                     onClick = {
                         chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
                         uriState.update { "" }
-                    }
+                        keyboardController?.hide()
+                    },
+                    enabled = isSendEnabled
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
                         imageVector = Icons.Rounded.Send,
                         contentDescription = "Send prompt",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = if (isSendEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                     )
                 }
 
@@ -235,16 +258,18 @@ class MainActivity : ComponentActivity() {
                 )
             }
 
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding(16.dp),
-                text = prompt,
-                fontSize = 17.sp,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+            if (prompt.isNotEmpty()) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(16.dp),
+                    text = prompt,
+                    fontSize = 17.sp,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
 
         }
     }
