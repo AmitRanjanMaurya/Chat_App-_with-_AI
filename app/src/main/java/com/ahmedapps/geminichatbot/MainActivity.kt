@@ -200,13 +200,18 @@ class MainActivity : ComponentActivity() {
                     onClick = {
                         chaViewModel.onEvent(ChatUiEvent.SendPrompt(chatState.prompt, bitmap))
                         uriState.update { "" }
-                    }
+                    },
+                    enabled = chatState.prompt.isNotBlank() || bitmap != null
                 ) {
                     Icon(
                         modifier = Modifier.size(40.dp),
                         imageVector = Icons.Rounded.Send,
                         contentDescription = "Send prompt",
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = if (chatState.prompt.isNotBlank() || bitmap != null) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                        }
                     )
                 }
 
