@@ -1,3 +1,6 @@
 ## 2024-05-24 - Accessible Interactive Icons in Jetpack Compose
 **Learning:** Using `Modifier.clickable` on an `Icon` component in Jetpack Compose does not automatically provide the necessary minimum touch target size (48x48dp) or visual feedback (like a ripple effect) required for good accessibility and UX.
 **Action:** Always prefer wrapping `Icon` components with an `IconButton` when they are meant to be interactive. `IconButton` built-in defaults satisfy accessibility touch targets and provide focus semantics and ripple effects out of the box.
+## 2024-05-24 - Disabled State and Custom Tint in Jetpack Compose
+**Learning:** When using custom tints for icons within interactive components like `IconButton`, Jetpack Compose does not automatically reflect the `enabled` state visually. You must dynamically adjust the inner `Icon`'s `tint` (e.g., using `MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)`) based on the button's enablement logic to ensure proper user feedback. Additionally, checking for `isNotBlank()` instead of `isNotEmpty()` prevents users from submitting whitespace-only messages.
+**Action:** Always dynamically adjust custom tints based on the `enabled` parameter, and use `isNotBlank()` for text validation.
